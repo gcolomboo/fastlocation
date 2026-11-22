@@ -46,19 +46,21 @@ class _HomePageState extends State<HomePage> {
           .where((part) => part.trim().isNotEmpty).join(', ');
       final matches = await Geocoding().locationFromAddress(target);
       if (matches.isEmpty) throw StateError('Sem coordenadas');
-      final maps = await MapLauncher.installedMaps;
-      if (maps.isEmpty) throw StateError('Sem aplicativos de mapas');
       final location = matches.first;
+      final directions = MapLauncher.directions(
+        LocationCoords.coords(location.latitude, location.longitude, title: item.fullAddress),
+      );
+      final maps = await directions.getSupportedMaps([MapApp.google, MapApp.apple, MapApp.waze]);
+      if (maps.isEmpty) throw StateError('Sem aplicativos de mapas');
       if (!mounted) return;
       await showModalBottomSheet<void>(context: context, builder: (context) =>
         SafeArea(child: Column(mainAxisSize: MainAxisSize.min, children: [
           const ListTile(title: Text('Escolha um aplicativo de mapas')),
           ...maps.map((map) => ListTile(
-            leading: const Icon(Icons.map_outlined), title: Text(map.mapName),
+            leading: const Icon(Icons.map_outlined), title: Text(map.name),
             onTap: () async {
               Navigator.pop(context);
-              await map.showDirections(destination: Coords(location.latitude, location.longitude),
-                destinationTitle: item.fullAddress);
+              await map.show();
             })),
         ])));
     } catch (_) {
