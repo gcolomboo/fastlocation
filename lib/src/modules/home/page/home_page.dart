@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
       if (matches.isEmpty) throw StateError('Sem coordenadas');
       final location = matches.first;
       final directions = MapLauncher.directions(
-        LocationCoords.coords(location.latitude, location.longitude, title: item.fullAddress),
+        LocationCoords(location.latitude, location.longitude, title: item.fullAddress),
       );
       final maps = await directions.getSupportedMaps([MapApp.google, MapApp.apple, MapApp.waze]);
       if (maps.isEmpty) throw StateError('Sem aplicativos de mapas');
