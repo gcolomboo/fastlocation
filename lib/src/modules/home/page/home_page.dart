@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
     try {
       final target = [item.logradouro, item.bairro, item.localidade, item.uf, 'Brasil']
           .where((part) => part.trim().isNotEmpty).join(', ');
-      final matches = await locationFromAddress(target);
+      final matches = await Geocoding().locationFromAddress(target);
       if (matches.isEmpty) throw StateError('Sem coordenadas');
       final maps = await MapLauncher.installedMaps;
       if (maps.isEmpty) throw StateError('Sem aplicativos de mapas');
