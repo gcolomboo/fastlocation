@@ -9,7 +9,7 @@ Aplicativo acadêmico em **Flutter/Dart** para consultar CEP e endereços brasil
 - Interface reativa usando MobX e flutter_mobx
 - Splash screen animada, indicadores de carregamento, busca vazia e erros
 - Rotas no aplicativo de mapas instalado, a partir da localização atual gerenciada pelo app de mapas
-- Compatível com Android e iOS (após geração dos projetos nativos)
+- Estrutura de projeto Android e iOS incluída (compilação Android validada; execução em dispositivo e compilação iOS ainda não validadas)
 
 ## Requisitos
 - Flutter SDK instalado (Flutter 3.24+ recomendado)
@@ -19,15 +19,14 @@ Aplicativo acadêmico em **Flutter/Dart** para consultar CEP e endereços brasil
 
 ## Como executar
 
-Este pacote contém todo o código Dart e a configuração do aplicativo. Como o Flutter SDK não está disponível no ambiente em que o pacote foi gerado, os diretórios nativos Android e iOS precisam ser criados **uma vez** no computador que tenha Flutter:
+O repositório já inclui os diretórios nativos `android/` e `ios/`. Com o Flutter SDK configurado e um dispositivo ou emulador disponível, execute na pasta que contém `pubspec.yaml`:
 
 ```bash
-flutter create --project-name fastlocation --platforms android,ios .
 flutter pub get
 flutter run
 ```
 
-**Importante:** execute os comandos na pasta que contém `pubspec.yaml`. `flutter create` preserva o código existente e gera a estrutura nativa necessária.
+Para compilar Android pelo GitHub Actions, acesse a aba **Actions** do repositório e consulte o workflow de compilação Android. A compilação Android mais recente anterior à atualização deste README foi concluída com sucesso.
 
 Para testar:
 
@@ -66,25 +65,13 @@ A busca por endereço requer UF com duas letras e cidade/logradouro com pelo men
 - Para Android, confirme permissão de internet no manifesto caso a geração nativa não a inclua. No iOS, testes e compilação exigem macOS/Xcode.
 - A disponibilidade de mapas e a precisão da geocodificação dependem do dispositivo e dos serviços instalados.
 
-## Publicação no GitHub
+## Repositório e verificação
 
-```bash
-git init
-git add .
-git commit -m "Implementa aplicativo FastLocation"
-git branch -M main
-git remote add origin https://github.com/gcolomboo/fastlocation.git
-git push -u origin main
-```
+Código-fonte: https://github.com/gcolomboo/fastlocation
 
-Crie primeiro o repositório vazio `fastlocation` no GitHub do usuário `gcolomboo`. Envie o link do repositório na plataforma da faculdade.
+A compilação Android é automatizada em `.github/workflows/`. O resultado bem-sucedido pode ser consultado em https://github.com/gcolomboo/fastlocation/actions/runs/45030211092.
 
-## Antes de publicar
-
-1. Execute `flutter create --project-name fastlocation --platforms android,ios .` para gerar os projetos nativos.
-2. Confira em `android/app/src/main/AndroidManifest.xml` a permissão `<uses-permission android:name="android.permission.INTERNET" />` dentro de `<manifest>` e fora de `<application>`. Adicione-a se estiver ausente.
-3. Execute `flutter pub get`, `flutter analyze`, `flutter test` e `flutter run`.
-4. Só publique após corrigir eventuais erros do ambiente e testar as consultas e a abertura de mapas em um dispositivo.
+Para validação local, execute `flutter pub get`, `flutter analyze`, `flutter test` e `flutter run` em um ambiente com Flutter e dispositivo/emulador configurado. A execução das consultas, o histórico e a abertura de mapas em dispositivo real ainda precisam ser testados. Para compilar e executar no iOS, é necessário macOS com Xcode.
 
 ## Nota sobre as versões
 
